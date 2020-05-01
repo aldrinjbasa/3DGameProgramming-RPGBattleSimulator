@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, DEFEAT }
@@ -10,17 +11,29 @@ public class BattleSystem : MonoBehaviour
     public BattleState currentState;
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
+    public Transform playerPlatform;
+    public Transform enemyPlatform;
 
     Humanoid playerHumanoid;
     Humanoid enemyHumanoid;
 
+    public BattleUI playerUI;
+
     void Start()
     {
         currentState = BattleState.START;
+        StartCoroutine(StartBattle());
     }
 
     IEnumerator StartBattle()
     {
+        GameObject playerObject = Instantiate(playerPrefab, playerPlatform);
+        playerHumanoid = playerObject.GetComponent<Humanoid>();
+        GameObject enemyObject = Instantiate(enemyPrefab, enemyPlatform);
+        enemyHumanoid = enemyObject.GetComponent<Humanoid>();
+
+        playerUI.StartHUD(playerHumanoid);
+
         yield return new WaitForSeconds(2f);
         currentState = BattleState.PLAYERTURN;
         PlayerTurn();
