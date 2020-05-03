@@ -24,11 +24,11 @@ public class Humanoid : MonoBehaviour
 
         if(currentHealth <= 0)
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
 

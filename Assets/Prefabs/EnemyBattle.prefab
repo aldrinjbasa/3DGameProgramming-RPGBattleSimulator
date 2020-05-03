@@ -106,9 +106,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: 
   level: 5
-  damage: 0
-  currentHealth: 100
-  maxHealth: 100
+  damage: 100
+  currentHealth: 500
+  maxHealth: 500
   currentMP: 10
   maxMP: 10
   currentLimit: 0

@@ -14,6 +14,8 @@ public class BattleSystem : MonoBehaviour
     public Transform playerPlatform;
     public Transform enemyPlatform;
 
+    public GameObject BattleUIMenu;
+
     Humanoid playerHumanoid;
     Humanoid enemyHumanoid;
 
@@ -27,9 +29,16 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator StartBattle()
     {
-        GameObject playerObject = Instantiate(playerPrefab, playerPlatform);
+        Vector3 adjustVector = new Vector3(0, 1, 0);
+
+        GameObject playerObject = Instantiate(playerPrefab, playerPlatform.transform.position, Quaternion.identity);
+        playerObject.transform.position += adjustVector;
+        playerObject.transform.SetParent(playerPlatform, true);
         playerHumanoid = playerObject.GetComponent<Humanoid>();
-        GameObject enemyObject = Instantiate(enemyPrefab, enemyPlatform);
+
+        GameObject enemyObject = Instantiate(enemyPrefab, enemyPlatform.transform.position, Quaternion.identity);
+        enemyObject.transform.position += adjustVector;
+        enemyObject.transform.SetParent(enemyPlatform, true);
         enemyHumanoid = enemyObject.GetComponent<Humanoid>();
 
         playerUI.StartHUD(playerHumanoid);
@@ -41,6 +50,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator Attack()
     {
+        BattleUIMenu.SetActive(false);
         bool isDead = enemyHumanoid.DamageTaken(playerHumanoid.damage);
 
         //Update Enemy HealthBar
@@ -62,7 +72,7 @@ public class BattleSystem : MonoBehaviour
 
     void PlayerTurn()
     {
-
+        BattleUIMenu.SetActive(true);
     }
 
     IEnumerator EnemyTurn()
