@@ -28,5 +28,11 @@ public class BattleUI : MonoBehaviour
         limitSlider.value = humanoid.currentLimit;
     }
 
+    public void UpdateHP(Humanoid humanoid)
+    {
+        healthText.text = humanoid.currentHealth + "/ " + humanoid.maxHealth;
+        healthSlider.value = humanoid.currentHealth;
+    }
+
 
 }

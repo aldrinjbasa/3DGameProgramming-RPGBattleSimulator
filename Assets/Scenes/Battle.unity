@@ -2198,10 +2198,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  playerPrefab: {fileID: 6579318214438529926, guid: ad035ade188a3e9419197ec975b63801,
+  playerPrefab: {fileID: 734417370111845080, guid: ad035ade188a3e9419197ec975b63801,
     type: 3}
-  enemyPrefab: {fileID: 1384966586272372796, guid: 072a150238b43e54784faf1317f92716,
+  enemyPrefab: {fileID: 3201033567841158321, guid: 072a150238b43e54784faf1317f92716,
     type: 3}
+  playerObject: {fileID: 0}
+  enemyObject: {fileID: 0}
   playerPlatform: {fileID: 1487910813}
   enemyPlatform: {fileID: 1981253490}
   BattleUIMenu: {fileID: 251855581}
