@@ -40,7 +40,7 @@ public class BattleUI : MonoBehaviour
         healthSlider.value = humanoid.currentHealth;
     }
 
-    public void ShowDamage(Humanoid humanoid, int damage)
+    public void ShowDamage(Humanoid humanoid, float damage)
     {
         damageTextObject = Instantiate(damageTextPrefab);
         Vector2 screenPosition = Camera.main.WorldToScreenPoint(humanoid.transform.position);

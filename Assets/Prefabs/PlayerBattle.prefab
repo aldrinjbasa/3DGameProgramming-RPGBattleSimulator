@@ -108,13 +108,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Player
   level: 5
-  damage: 100
+  baseDamage: 100
+  damage: 0
   currentHealth: 1000
   maxHealth: 1000
   currentMP: 50
   maxMP: 50
   currentLimit: 0
   maxLimit: 100
+  str: 20
+  luck: 5
 --- !u!114 &7755457233851887526
 MonoBehaviour:
   m_ObjectHideFlags: 0

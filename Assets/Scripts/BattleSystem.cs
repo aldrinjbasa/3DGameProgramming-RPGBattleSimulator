@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, DEFEAT }
 public class BattleSystem : MonoBehaviour
@@ -17,6 +17,7 @@ public class BattleSystem : MonoBehaviour
     public Transform enemyPlatform;
 
     public GameObject BattleUIMenu;
+    public GameObject BattleUIAlert;
 
     Humanoid playerHumanoid;
     Humanoid enemyHumanoid;
@@ -60,12 +61,16 @@ public class BattleSystem : MonoBehaviour
         playerObject.transform.position += hitAdjust;
         yield return new WaitForSeconds(0.5f);
         playerObject.GetComponent<Animator>().Play("Player_Attack");
-        //Deal Damage to Player
-        bool isDead = enemyHumanoid.DamageTaken(playerHumanoid.damage);
+
+        //Deal Damage to Enemy
+        playerHumanoid.CalculateDamage();
+        bool isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
+
         //Update Enemy HealthBar (If I decide to implement one l o l)
         playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
 
-        yield return new WaitForSeconds(1f); //Buffer for animation
+        //Animation Buffer
+        yield return new WaitForSeconds(1f);
 
         //Move Back Animation
         playerObject.GetComponent<Animator>().Play("Player_Idle");
@@ -107,12 +112,16 @@ public class BattleSystem : MonoBehaviour
         enemyObject.transform.position -= hitAdjust;
         yield return new WaitForSeconds(0.5f);
         enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
+
         //Enemy Attack
-        bool isDead = playerHumanoid.DamageTaken(enemyHumanoid.damage);
+        enemyHumanoid.CalculateDamage();
+        bool isDead = playerHumanoid.TakeDamage(enemyHumanoid.damage);
+
         //Update Player Health Bar
         playerUI.UpdateHP(playerHumanoid);
         playerUI.ShowDamage(playerHumanoid, enemyHumanoid.damage);
 
+        //Animation Buffer
         yield return new WaitForSeconds(1f);
 
         //Move Back Animation
@@ -128,6 +137,8 @@ public class BattleSystem : MonoBehaviour
         if (isDead)
         {
             currentState = BattleState.DEFEAT;
+            playerObject.GetComponent<Animator>().Play("Player_Death");
+            yield return new WaitForSeconds(1f);
             EndBattle();
         }
         else
@@ -152,12 +163,26 @@ public class BattleSystem : MonoBehaviour
     {
         if(currentState == BattleState.WIN)
         {
+            //Alert player of win
+            BattleUIAlert.GetComponentInChildren<Text>().text = "You've beaten " + enemyHumanoid.charName + " !";
+            BattleUIAlert.SetActive(true);
             //Reward EXP
 
+            //Return to Game World
+            StartCoroutine(ReturnToWorld());
         }
         else if(currentState == BattleState.DEFEAT)
         {
             //Stuff to put when you lose
+            BattleUIAlert.GetComponentInChildren<Text>().text = "You lost" + enemyHumanoid.charName + " !";
+            BattleUIAlert.SetActive(true);
+            StartCoroutine(ReturnToWorld()); //Change this to game over on final game
         }
+    }
+
+    IEnumerator ReturnToWorld()
+    {
+        yield return new WaitForSeconds(2.5f);
+        SceneManager.LoadScene(0);
     }
 }

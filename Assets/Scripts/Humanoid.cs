@@ -7,10 +7,11 @@ public class Humanoid : MonoBehaviour
 
     public string charName;
     public int level;
-    public int damage;
+    public float baseDamage;
+    public float damage;
 
-    public int currentHealth;
-    public int maxHealth;
+    public float currentHealth;
+    public float maxHealth;
 
     public int currentMP;
     public int maxMP;
@@ -18,9 +19,12 @@ public class Humanoid : MonoBehaviour
     public int currentLimit;
     public int maxLimit;
 
+    public float str;
+    public float luck;
 
 
-    public bool DamageTaken(int damageTaken)
+
+    public bool TakeDamage(float damageTaken) //Argument is used as BaseDamage
     {
         currentHealth -= damageTaken;
         if(currentHealth <= 0)
@@ -33,5 +37,10 @@ public class Humanoid : MonoBehaviour
         }
     }
 
+    public float CalculateDamage()
+    {
+        damage = Mathf.Floor(baseDamage + (baseDamage * (str / 100)) + Random.Range(0, ((baseDamage / 2) * (luck / 3))));
+        return damage;
+    }
 
 }

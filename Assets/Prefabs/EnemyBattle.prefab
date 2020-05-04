@@ -107,13 +107,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Red Block
   level: 5
-  damage: 100
+  baseDamage: 100
+  damage: 0
   currentHealth: 500
   maxHealth: 500
   currentMP: 10
   maxMP: 10
   currentLimit: 0
   maxLimit: 100
+  str: 5
+  luck: 1
 --- !u!95 &7465122798350001857
 Animator:
   serializedVersion: 3
