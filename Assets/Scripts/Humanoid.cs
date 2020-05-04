@@ -18,10 +18,11 @@ public class Humanoid : MonoBehaviour
     public int currentLimit;
     public int maxLimit;
 
+
+
     public bool DamageTaken(int damageTaken)
     {
         currentHealth -= damageTaken;
-
         if(currentHealth <= 0)
         {
             return true;

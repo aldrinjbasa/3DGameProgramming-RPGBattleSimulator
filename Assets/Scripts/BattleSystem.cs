@@ -63,6 +63,7 @@ public class BattleSystem : MonoBehaviour
         //Deal Damage to Player
         bool isDead = enemyHumanoid.DamageTaken(playerHumanoid.damage);
         //Update Enemy HealthBar (If I decide to implement one l o l)
+        playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
 
         yield return new WaitForSeconds(1f); //Buffer for animation
 
@@ -79,6 +80,9 @@ public class BattleSystem : MonoBehaviour
         if (isDead)
         {
             currentState = BattleState.WIN;
+            enemyObject.GetComponent<Animator>().Play("Enemy_Death");
+            yield return new WaitForSeconds(1f);
+            Destroy(enemyObject);
             EndBattle();
         }
         else
@@ -95,7 +99,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         //PlayAnimation
         enemyObject.transform.position = playerObject.transform.position;
@@ -105,9 +109,9 @@ public class BattleSystem : MonoBehaviour
         enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
         //Enemy Attack
         bool isDead = playerHumanoid.DamageTaken(enemyHumanoid.damage);
-
         //Update Player Health Bar
         playerUI.UpdateHP(playerHumanoid);
+        playerUI.ShowDamage(playerHumanoid, enemyHumanoid.damage);
 
         yield return new WaitForSeconds(1f);
 
@@ -148,8 +152,8 @@ public class BattleSystem : MonoBehaviour
     {
         if(currentState == BattleState.WIN)
         {
-            //Destroy Enemy
             //Reward EXP
+
         }
         else if(currentState == BattleState.DEFEAT)
         {

@@ -1000,6 +1000,9 @@ MonoBehaviour:
   healthSlider: {fileID: 1639385365}
   mpSlider: {fileID: 62265640}
   limitSlider: {fileID: 1788257328}
+  damageTextPrefab: {fileID: 2995428015257003583, guid: b39647dc33385fb4a908f53f4a62066f,
+    type: 3}
+  canvas: {fileID: 723465344}
 --- !u!1 &913958369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.19607843}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
