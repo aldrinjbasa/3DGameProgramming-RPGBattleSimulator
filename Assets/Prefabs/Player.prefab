@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4878272439199031906}
   - component: {fileID: 4878272439199031907}
   - component: {fileID: 4878272439199031908}
+  - component: {fileID: 9033044398437435964}
   - component: {fileID: 4878272439199031935}
   - component: {fileID: 4878272439199031934}
   - component: {fileID: 4878272439199031904}
@@ -94,6 +95,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &9033044398437435964
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4878272439199031909}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &4878272439199031935
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -130,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: 
   level: 5
+  baseDamage: 0
   damage: 0
   currentHealth: 0
   maxHealth: 0
@@ -137,6 +152,8 @@ MonoBehaviour:
   maxMP: 0
   currentLimit: 0
   maxLimit: 0
+  str: 0
+  luck: 0
 --- !u!114 &4878272439199031904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,3 +169,5 @@ MonoBehaviour:
   movementLayer:
     serializedVersion: 2
     m_Bits: 1024
+  transitionAnimator: {fileID: 1388232816433492501, guid: 502ed9a4786c1cd49bf0e1cb984d993a,
+    type: 3}

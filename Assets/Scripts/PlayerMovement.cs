@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     public LayerMask movementLayer;
     private NavMeshAgent playerNavMeshAgent;
+    public Animator transitionAnimator;
 
 
     // Start is called before the first frame update
@@ -29,5 +31,22 @@ public class PlayerMovement : MonoBehaviour
                 playerNavMeshAgent.SetDestination(clickPosition.point);
             }
         }
+    }
+
+    IEnumerator BattleTransition(int levelIndex)
+    {
+        transitionAnimator.SetTrigger("StartBattleTransition");
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(levelIndex);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Player entered trigger");
+        if(other.tag == "Enemy")
+        {
+            StartCoroutine(BattleTransition(1));
+        }
+        
     }
 }
