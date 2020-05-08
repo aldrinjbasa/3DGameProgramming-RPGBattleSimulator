@@ -38,6 +38,13 @@ public class BattleUI : MonoBehaviour
     {
         healthText.text = humanoid.currentHealth + "/ " + humanoid.maxHealth;
         healthSlider.value = humanoid.currentHealth;
+        mpText.text = humanoid.currentMP + "/ " + humanoid.maxMP;
+        mpSlider.value = humanoid.currentMP;
+    }
+
+    public void UpdateLimit(Humanoid humanoid)
+    {
+        limitSlider.value = humanoid.currentLimit;
     }
 
     public void ShowDamage(Humanoid humanoid, float damage)

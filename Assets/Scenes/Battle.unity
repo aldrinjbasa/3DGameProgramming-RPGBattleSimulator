@@ -2396,4 +2396,8 @@ MonoBehaviour:
   enemyPlatform: {fileID: 1981253490}
   BattleUIMenu: {fileID: 251855581}
   BattleUIAlert: {fileID: 2085365814}
+  SkillMenu: {fileID: 0}
+  Limit: {fileID: 0}
+  LimitMenu: {fileID: 0}
+  player: {fileID: 0}
   playerUI: {fileID: 892025459}

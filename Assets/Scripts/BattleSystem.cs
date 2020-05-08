@@ -18,6 +18,11 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject BattleUIMenu;
     public GameObject BattleUIAlert;
+    public GameObject SkillMenu;
+    public GameObject Limit;
+    public GameObject LimitMenu;
+    public GameObject CreditsButton;
+    public GameObject player;
 
     Humanoid playerHumanoid;
     Humanoid enemyHumanoid;
@@ -28,7 +33,7 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         currentState = BattleState.START;
-
+        player = GameObject.Find("Player");
         StartCoroutine(StartBattle());
     }
 
@@ -39,14 +44,14 @@ public class BattleSystem : MonoBehaviour
         playerObject.transform.position += adjustVector;
         //playerObject.transform.SetParent(playerPlatform, true);
         playerHumanoid = playerObject.GetComponent<Humanoid>();
-
+        player.GetComponent<Humanoid>().updateBattleStats(playerHumanoid);
         enemyObject = Instantiate(enemyPrefab, enemyPlatform.transform.position, Quaternion.identity);
         enemyObject.transform.position += adjustVector;
         //enemyObject.transform.SetParent(enemyPlatform, true);
         enemyHumanoid = enemyObject.GetComponent<Humanoid>();
 
         playerUI.StartHUD(playerHumanoid);
-
+        player.SetActive(false);
         yield return new WaitForSeconds(2f);
         currentState = BattleState.PLAYERTURN;
         PlayerTurn();
@@ -87,7 +92,6 @@ public class BattleSystem : MonoBehaviour
             currentState = BattleState.WIN;
             enemyObject.GetComponent<Animator>().Play("Enemy_Death");
             yield return new WaitForSeconds(1f);
-            Destroy(enemyObject);
             EndBattle();
         }
         else
@@ -100,26 +104,56 @@ public class BattleSystem : MonoBehaviour
     void PlayerTurn()
     {
         BattleUIMenu.SetActive(true);
+        if(playerHumanoid.currentLimit >= playerHumanoid.maxLimit)
+        {
+            playerHumanoid.currentLimit = playerHumanoid.maxLimit;
+            Limit.SetActive(true);
+        }
     }
 
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(1f);
 
-        //PlayAnimation
+        int enemyAction = Random.Range(1, 5);
+
+        //PlayAnimation(Attack)
         enemyObject.transform.position = playerObject.transform.position;
         Vector3 hitAdjust = new Vector3(0f, 0f, 1f);
         enemyObject.transform.position -= hitAdjust;
         yield return new WaitForSeconds(0.5f);
-        enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
+        //AI For Boss
+        if(enemyObject.name == "Boss")
+        {
+            if (enemyAction != 4)
+            {
+                enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
+                enemyHumanoid.CalculateDamage();
+            }
+            //PlayAnimation(Jump)
+            else if (enemyAction == 4)
+            {
+                BattleUIAlert.GetComponentInChildren<Text>().text = "Jump";
+                BattleUIAlert.SetActive(true);
+                enemyObject.GetComponent<Animator>().Play("Boss_Jump");
+                enemyHumanoid.CalculateJump();
+                yield return new WaitForSeconds(2f);
+            }
+        }
+        else
+        {
+            enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
+            enemyHumanoid.CalculateDamage();
+        }
+       
 
         //Enemy Attack
-        enemyHumanoid.CalculateDamage();
         bool isDead = playerHumanoid.TakeDamage(enemyHumanoid.damage);
 
         //Update Player Health Bar
         playerUI.UpdateHP(playerHumanoid);
         playerUI.ShowDamage(playerHumanoid, enemyHumanoid.damage);
+        playerUI.UpdateLimit(playerHumanoid);
 
         //Animation Buffer
         yield return new WaitForSeconds(1f);
@@ -159,30 +193,255 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(Attack());
     }
 
+    
+
+    IEnumerator ReturnToWorld()
+    {
+        yield return new WaitForSeconds(2.5f);
+        player.SetActive(true);
+        SceneManager.LoadScene(1);
+    }
+
+
+    public void OpenSkillMenu()
+    {
+        if(LimitMenu.activeInHierarchy == true)
+        {
+            LimitMenu.SetActive(false);
+        }
+        SkillMenu.SetActive(true);
+    }
+
+    public void CloseSkillMenu()
+    {
+        SkillMenu.SetActive(false);
+    }
+
+    public void OpenLimitMenu()
+    {
+        if(SkillMenu.activeInHierarchy == true)
+        {
+            SkillMenu.SetActive(false);
+        }
+        LimitMenu.SetActive(true);
+    }
+
+    public void CloseLimitMenu()
+    {
+        LimitMenu.SetActive(false);
+    }
+
+    public void OnXSlash()
+    {
+        if (currentState != BattleState.PLAYERTURN)
+        {
+            return;
+        }
+
+        StartCoroutine(XSlash());
+    }
+
+    public void OnCure()
+    {
+        if (currentState != BattleState.PLAYERTURN)
+        {
+            return;
+        }
+
+        StartCoroutine(Cure());
+    }
+
+    public void OnBigBoyMove()
+    {
+        if (currentState != BattleState.PLAYERTURN)
+        {
+            return;
+        }
+
+        StartCoroutine(BigBoyMove());
+    }
+
+    IEnumerator XSlash()
+    {
+        BattleUIMenu.SetActive(false);
+        BattleUIAlert.GetComponentInChildren<Text>().text = "X-Slash";
+        BattleUIAlert.SetActive(true);
+        //PlayAnimation
+        playerObject.transform.position = enemyObject.transform.position;
+        Vector3 hitAdjust = new Vector3(0f, 0f, 1f);
+        playerObject.transform.position += hitAdjust;
+        yield return new WaitForSeconds(0.5f);
+        playerObject.GetComponent<Animator>().Play("Player_XSlash");
+        yield return new WaitForSeconds(1f); //Wait for XSlash to finish
+        BattleUIAlert.SetActive(false);
+
+        //Deal Damage to Enemy
+        playerHumanoid.CalculateXSlash();
+        bool isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
+
+        //Update Enemy HealthBar (If I decide to implement one l o l)
+        playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+
+        //Deal Damage Again
+        playerHumanoid.CalculateXSlash();
+        isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
+        yield return new WaitForSeconds(0.5f);
+        playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+
+        //Animation Buffer
+        yield return new WaitForSeconds(1f);
+
+        //Move Back Animation
+        playerObject.GetComponent<Animator>().Play("Player_Idle");
+        yield return new WaitForSeconds(0.5f);
+        while (playerObject.transform.position != playerPlatform.transform.position) //Move Back
+        {
+            playerObject.transform.position = Vector3.MoveTowards(playerObject.transform.position, playerPlatform.transform.position, 1f * Time.deltaTime);
+        }
+        playerObject.transform.position += adjustVector;
+
+        //Check for game state
+        if (isDead)
+        {
+            currentState = BattleState.WIN;
+            enemyObject.GetComponent<Animator>().Play("Enemy_Death");
+            yield return new WaitForSeconds(1f);
+            EndBattle();
+        }
+        else
+        {
+            currentState = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    IEnumerator Cure()
+    {
+        BattleUIMenu.SetActive(false);
+        BattleUIAlert.GetComponentInChildren<Text>().text = "Cure 1";
+        BattleUIAlert.SetActive(true);
+        //PlayAnimation
+        ParticleSystem cureAnimation = playerObject.GetComponent<ParticleSystem>();
+        cureAnimation.Play();
+        ParticleSystem.EmissionModule cureParticles = cureAnimation.emission;
+        cureParticles.enabled = true;
+        yield return new WaitForSeconds(1.5f); //Wait for Cure to finish
+        BattleUIAlert.SetActive(false);
+        cureAnimation.Stop();
+        cureParticles.enabled = false;
+
+        //Deal Damage to Enemy
+        playerHumanoid.Cure();
+        bool isDead = playerHumanoid.TakeDamage(playerHumanoid.damage);
+        playerHumanoid.removeMP(5);
+
+        //Update Player HealthBar
+        playerUI.ShowDamage(playerHumanoid, playerHumanoid.damage);
+        playerUI.UpdateHP(playerHumanoid);
+
+        //Animation Buffer
+        yield return new WaitForSeconds(1f);
+
+        //Move Back Animation
+        playerObject.GetComponent<Animator>().Play("Player_Idle");
+        yield return new WaitForSeconds(0.5f);
+
+        //Check for game state
+        if (isDead)
+        {
+            currentState = BattleState.WIN;
+            enemyObject.GetComponent<Animator>().Play("Enemy_Death");
+            yield return new WaitForSeconds(1f);
+            EndBattle();
+        }
+        else
+        {
+            currentState = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    IEnumerator BigBoyMove()
+    {
+        BattleUIMenu.SetActive(false);
+        BattleUIAlert.GetComponentInChildren<Text>().text = "Limit: Big Boy Move";
+        BattleUIAlert.SetActive(true);
+        //PlayAnimation
+        playerObject.transform.position = enemyObject.transform.position;
+        Vector3 hitAdjust = new Vector3(0f, 0f, 1f);
+        playerObject.transform.position += hitAdjust;
+        yield return new WaitForSeconds(0.5f);
+        playerObject.GetComponent<Animator>().Play("Player_Limit1");
+        yield return new WaitForSeconds(3f); //Wait for XSlash to finish
+        BattleUIAlert.SetActive(false);
+
+        //Deal Damage to Enemy
+        playerHumanoid.CalculateBigBoyMove();
+        bool isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
+
+        //Update Enemy HealthBar
+        playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+        playerHumanoid.currentLimit = 0;
+        playerUI.UpdateLimit(playerHumanoid);
+        Limit.SetActive(false);
+
+        //Animation Buffer
+        yield return new WaitForSeconds(1f);
+
+        //Move Back Animation
+        playerObject.GetComponent<Animator>().Play("Player_Idle");
+        yield return new WaitForSeconds(0.5f);
+        while (playerObject.transform.position != playerPlatform.transform.position) //Move Back
+        {
+            playerObject.transform.position = Vector3.MoveTowards(playerObject.transform.position, playerPlatform.transform.position, 1f * Time.deltaTime);
+        }
+        playerObject.transform.position += adjustVector;
+
+        //Check for game state
+        if (isDead)
+        {
+            currentState = BattleState.WIN;
+            enemyObject.GetComponent<Animator>().Play("Enemy_Death");
+            yield return new WaitForSeconds(1f);
+            EndBattle();
+        }
+        else
+        {
+            currentState = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+
+
     void EndBattle()
     {
-        if(currentState == BattleState.WIN)
+        if (currentState == BattleState.WIN)
         {
             //Alert player of win
             BattleUIAlert.GetComponentInChildren<Text>().text = "You've beaten " + enemyHumanoid.charName + " !";
             BattleUIAlert.SetActive(true);
-            //Reward EXP
-
+            //Reward Player with XP
+            enemyObject.GetComponent<Humanoid>().giveRewardOnKill(playerObject.GetComponent<Humanoid>(), enemyObject.GetComponent<Humanoid>());
+            BattleUIAlert.GetComponentInChildren<Text>().text = enemyHumanoid.giveXP + "XP and " + enemyHumanoid.giveGold + " gold!";
+            playerHumanoid.currentXP += enemyHumanoid.giveXP;
+            playerHumanoid.gold += enemyHumanoid.giveGold;
+            playerObject.GetComponent<Humanoid>().updateBattleStats(player.GetComponent<Humanoid>());
+            if(enemyObject.name == "Boss")
+            {
+                BattleUIAlert.GetComponentInChildren<Text>().text = "Thank you for playing.";
+                CreditsButton.SetActive(true);
+            }
             //Return to Game World
             StartCoroutine(ReturnToWorld());
         }
-        else if(currentState == BattleState.DEFEAT)
+        else if (currentState == BattleState.DEFEAT)
         {
             //Stuff to put when you lose
-            BattleUIAlert.GetComponentInChildren<Text>().text = "You lost" + enemyHumanoid.charName + " !";
+            BattleUIAlert.GetComponentInChildren<Text>().text = "You lost to " + enemyHumanoid.charName + " !";
             BattleUIAlert.SetActive(true);
             StartCoroutine(ReturnToWorld()); //Change this to game over on final game
         }
     }
 
-    IEnumerator ReturnToWorld()
-    {
-        yield return new WaitForSeconds(2.5f);
-        SceneManager.LoadScene(0);
-    }
 }

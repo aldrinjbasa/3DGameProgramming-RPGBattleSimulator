@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3201033567841158321
+--- !u!1 &8542746478297925008
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3201033567841157964}
-  - component: {fileID: 3201033567841157965}
-  - component: {fileID: 3201033567841157966}
-  - component: {fileID: 3201033567841157967}
-  - component: {fileID: 3201033567841158320}
-  - component: {fileID: 7465122798350001857}
+  - component: {fileID: 8542746478297924205}
+  - component: {fileID: 8542746478297924204}
+  - component: {fileID: 8542746478297924207}
+  - component: {fileID: 8542746478297924206}
+  - component: {fileID: 8542746478297925009}
+  - component: {fileID: 4429505853497714656}
   m_Layer: 9
-  m_Name: Enemy
+  m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3201033567841157964
+--- !u!4 &8542746478297924205
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.41965, y: 1, z: 0.40542}
+  m_LocalScale: {x: 0.9767803, y: 2.3276072, z: 0.94365853}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3201033567841157965
+--- !u!33 &8542746478297924204
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3201033567841157966
+--- !u!23 &8542746478297924207
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a30f9a6a5cb72e845ab6d85dee266da4, type: 2}
+  - {fileID: 2100000, guid: 725fde45f4612ec4eb8e30fc6c943126, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,58 +80,58 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &3201033567841157967
+--- !u!65 &8542746478297924206
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3201033567841158320
+--- !u!114 &8542746478297925009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf2320a7d7d74af49b5d38e29648fec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charName: Red Block
-  level: 5
+  charName: Big Red Block
+  level: 15
   baseDamage: 100
   damage: 0
-  currentHealth: 100
-  maxHealth: 100
-  currentMP: 10
-  maxMP: 10
+  currentHealth: 750
+  maxHealth: 750
+  currentMP: 20
+  maxMP: 20
   currentLimit: 0
   maxLimit: 100
   currentXP: 0
-  maxXP: 100
-  giveXP: 30
+  maxXP: 200
+  giveXP: 50
   gold: 0
-  giveGold: 20
-  str: 5
-  intelligence: 0
+  giveGold: 100
+  str: 8
+  intelligence: 5
   luck: 1
   sceneComingFrom: 
---- !u!95 &7465122798350001857
+--- !u!95 &4429505853497714656
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201033567841158321}
+  m_GameObject: {fileID: 8542746478297925008}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 23482e8809d6aab43bb00d5caa080f75, type: 2}
