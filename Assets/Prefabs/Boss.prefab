@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2320a7d7d74af49b5d38e29648fec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charName: Big Red Block
+  charName: Big Purple Block
   level: 15
   baseDamage: 100
   damage: 0

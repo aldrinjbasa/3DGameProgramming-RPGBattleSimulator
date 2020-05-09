@@ -73,6 +73,7 @@ public class BattleSystem : MonoBehaviour
 
         //Update Enemy HealthBar (If I decide to implement one l o l)
         playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+        FindObjectOfType<AudioManager>().Play("BasicAttack");
 
         //Animation Buffer
         yield return new WaitForSeconds(1f);
@@ -129,6 +130,7 @@ public class BattleSystem : MonoBehaviour
             {
                 enemyObject.GetComponent<Animator>().Play("Enemy_Attack");
                 enemyHumanoid.CalculateDamage();
+                FindObjectOfType<AudioManager>().Play("BasicAttack");
             }
             //PlayAnimation(Jump)
             else if (enemyAction == 4)
@@ -138,6 +140,7 @@ public class BattleSystem : MonoBehaviour
                 enemyObject.GetComponent<Animator>().Play("Boss_Jump");
                 enemyHumanoid.CalculateJump();
                 yield return new WaitForSeconds(2f);
+                FindObjectOfType<AudioManager>().Play("Slash");
             }
         }
         else
@@ -189,7 +192,7 @@ public class BattleSystem : MonoBehaviour
         {
             return;
         }
-
+        FindObjectOfType<AudioManager>().Play("Menu");
         StartCoroutine(Attack());
     }
 
@@ -199,6 +202,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         player.SetActive(true);
+        FindObjectOfType<AudioManager>().Play("WorldMusic");
         SceneManager.LoadScene(1);
     }
 
@@ -209,11 +213,13 @@ public class BattleSystem : MonoBehaviour
         {
             LimitMenu.SetActive(false);
         }
+        FindObjectOfType<AudioManager>().Play("Menu");
         SkillMenu.SetActive(true);
     }
 
     public void CloseSkillMenu()
     {
+        FindObjectOfType<AudioManager>().Play("Menu");
         SkillMenu.SetActive(false);
     }
 
@@ -223,11 +229,13 @@ public class BattleSystem : MonoBehaviour
         {
             SkillMenu.SetActive(false);
         }
+        FindObjectOfType<AudioManager>().Play("Menu");
         LimitMenu.SetActive(true);
     }
 
     public void CloseLimitMenu()
     {
+        FindObjectOfType<AudioManager>().Play("Menu");
         LimitMenu.SetActive(false);
     }
 
@@ -237,12 +245,13 @@ public class BattleSystem : MonoBehaviour
         {
             return;
         }
-
+        FindObjectOfType<AudioManager>().Play("Menu");
         StartCoroutine(XSlash());
     }
 
     public void OnCure()
     {
+        FindObjectOfType<AudioManager>().Play("Menu");
         if (currentState != BattleState.PLAYERTURN)
         {
             return;
@@ -263,7 +272,7 @@ public class BattleSystem : MonoBehaviour
         {
             return;
         }
-
+        FindObjectOfType<AudioManager>().Play("Menu");
         StartCoroutine(BigBoyMove());
     }
 
@@ -287,12 +296,14 @@ public class BattleSystem : MonoBehaviour
 
         //Update Enemy HealthBar (If I decide to implement one l o l)
         playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+        FindObjectOfType<AudioManager>().Play("Slash");
 
         //Deal Damage Again
         playerHumanoid.CalculateXSlash();
         isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
         yield return new WaitForSeconds(0.5f);
         playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
+        FindObjectOfType<AudioManager>().Play("Slash");
 
         //Animation Buffer
         yield return new WaitForSeconds(1f);
@@ -446,8 +457,9 @@ public class BattleSystem : MonoBehaviour
                 Credits.SetActive(true);
             }
             //Return to Game World
-            else if(enemyObject.name != "Boss")
+            else if(enemyObject.name != "Boss(Clone)")
             {
+                FindObjectOfType<AudioManager>().Stop("BattleMusic");
                 StartCoroutine(ReturnToWorld());
             }
         }
@@ -456,6 +468,8 @@ public class BattleSystem : MonoBehaviour
             //Stuff to put when you lose
             BattleUIAlert.GetComponentInChildren<Text>().text = "You lost to " + enemyHumanoid.charName + " !";
             BattleUIAlert.SetActive(true);
+            FindObjectOfType<AudioManager>().Stop("BattleMusic");
+            FindObjectOfType<AudioManager>().Play("WorldMusic");
             StartCoroutine(ReturnToWorld()); //Change this to game over on final game
         }
     }

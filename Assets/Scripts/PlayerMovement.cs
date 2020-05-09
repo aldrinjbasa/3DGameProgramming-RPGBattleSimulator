@@ -39,10 +39,12 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Transition(int levelIndex, string transitionTrigger)
     {
-        if(levelIndex == 2)
+        if(levelIndex == 2 || levelIndex == 4)
         {
             if (battleTransition.transform.GetChild(0).gameObject.activeSelf == false)
             {
+                FindObjectOfType<AudioManager>().Stop("WorldMusic");
+                FindObjectOfType<AudioManager>().Play("BattleMusic");
                 battleTransition.transform.GetChild(0).gameObject.SetActive(true);
             }
         }

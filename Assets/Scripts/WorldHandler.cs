@@ -6,24 +6,30 @@ using UnityEngine.AI;
 
 public class WorldHandler : MonoBehaviour
 {
+    public GameObject AudioManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(SceneManager.GetActiveScene().name == "Grass Field 1")
+        if(SceneManager.GetActiveScene().name == "Home")
+        {
+            AudioManager.GetComponent<AudioManager>().Play("WorldMusic");
+        }
+        else if(SceneManager.GetActiveScene().name == "Grass Field 1")
         {
             StartCoroutine(startPositionGrassField());
         }
-        else if(SceneManager.GetActiveScene().name == "Boss Room"){
+        else if(SceneManager.GetActiveScene().name == "Boss Room")
+        {
             StartCoroutine(startPositionBossRoom());
+        }
+        else if(SceneManager.GetActiveScene().name == "Battle" || SceneManager.GetActiveScene().name == "Battle2")
+        {
+            AudioManager.GetComponent<AudioManager>().Stop("WorldMusic");
+            AudioManager.GetComponent<AudioManager>().Play("BattleMusic");
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Vector3 startPosition = new Vector3(6.49f, 0.75f, -0.769f);
-        //GameObject.Find("Player").transform.position = startPosition;
-    }
 
     IEnumerator startPositionGrassField()
     {
