@@ -13,6 +13,9 @@ public class WorldHandler : MonoBehaviour
         {
             StartCoroutine(startPositionGrassField());
         }
+        else if(SceneManager.GetActiveScene().name == "Boss Room"){
+            StartCoroutine(startPositionBossRoom());
+        }
     }
 
     // Update is called once per frame
@@ -23,6 +26,14 @@ public class WorldHandler : MonoBehaviour
     }
 
     IEnumerator startPositionGrassField()
+    {
+        yield return new WaitForSeconds(0.3f);
+        Vector3 startPosition = new Vector3(6.49f, 0.75f, -0.769f);
+        GameObject.Find("Player").transform.position = startPosition;
+        GameObject.Find("Player").GetComponent<NavMeshAgent>().enabled = true;
+    }
+
+    IEnumerator startPositionBossRoom()
     {
         yield return new WaitForSeconds(0.3f);
         Vector3 startPosition = new Vector3(6.49f, 0.75f, -0.769f);

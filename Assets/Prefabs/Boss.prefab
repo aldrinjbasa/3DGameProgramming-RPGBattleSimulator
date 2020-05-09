@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 8542746478297924206}
   - component: {fileID: 8542746478297925009}
   - component: {fileID: 4429505853497714656}
+  - component: {fileID: 4722516166762251422}
   m_Layer: 9
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,8 +110,8 @@ MonoBehaviour:
   level: 15
   baseDamage: 100
   damage: 0
-  currentHealth: 750
-  maxHealth: 750
+  currentHealth: 2000
+  maxHealth: 2000
   currentMP: 20
   maxMP: 20
   currentLimit: 0
@@ -143,3 +144,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!54 &4722516166762251422
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8542746478297925008}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

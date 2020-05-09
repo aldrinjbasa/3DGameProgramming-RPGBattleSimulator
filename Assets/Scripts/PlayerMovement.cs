@@ -58,11 +58,26 @@ public class PlayerMovement : MonoBehaviour
         playerNavMeshAgent.enabled = false;
         if(other.tag == "Enemy")
         {
-            StartCoroutine(Transition(2, "StartBattleTransition"));
+            if(other.gameObject.name == "Enemy")
+            {
+                StartCoroutine(Transition(2, "StartBattleTransition"));
+            }
+            else if (other.gameObject.name == "Boss")
+            {
+                StartCoroutine(Transition(4, "StartBattleTransition"));
+            }
+
         }
         else if(other.tag == "Portal")
         {
-            StartCoroutine(Transition(1, "StartMapTransition"));
+            if(other.gameObject.name == "Portal")
+            {
+                StartCoroutine(Transition(1, "StartMapTransition"));
+            }
+            else if(other.gameObject.name == "PortalToBoss")
+            {
+                StartCoroutine(Transition(3, "StartMapTransition"));
+            }
         }
         
     }

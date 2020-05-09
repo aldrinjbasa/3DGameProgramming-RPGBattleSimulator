@@ -21,7 +21,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject SkillMenu;
     public GameObject Limit;
     public GameObject LimitMenu;
-    public GameObject CreditsButton;
+    public GameObject Credits;
     public GameObject player;
 
     Humanoid playerHumanoid;
@@ -123,7 +123,7 @@ public class BattleSystem : MonoBehaviour
         enemyObject.transform.position -= hitAdjust;
         yield return new WaitForSeconds(0.5f);
         //AI For Boss
-        if(enemyObject.name == "Boss")
+        if(enemyObject.name == "Boss(Clone)")
         {
             if (enemyAction != 4)
             {
@@ -247,8 +247,14 @@ public class BattleSystem : MonoBehaviour
         {
             return;
         }
-
-        StartCoroutine(Cure());
+        if(playerHumanoid.currentMP <= 0)
+        {
+            //Do Nothing (Should throw a "No MP Text")
+        }
+        else
+        {
+            StartCoroutine(Cure());
+        }
     }
 
     public void OnBigBoyMove()
@@ -334,6 +340,10 @@ public class BattleSystem : MonoBehaviour
         playerHumanoid.Cure();
         bool isDead = playerHumanoid.TakeDamage(playerHumanoid.damage);
         playerHumanoid.removeMP(5);
+        if(playerHumanoid.currentHealth >= playerHumanoid.maxHealth)
+        {
+            playerHumanoid.currentHealth = playerHumanoid.maxHealth;
+        }
 
         //Update Player HealthBar
         playerUI.ShowDamage(playerHumanoid, playerHumanoid.damage);
@@ -412,7 +422,10 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-
+    public void toCredits()
+    {
+        SceneManager.LoadScene("Credits");
+    }
 
     void EndBattle()
     {
@@ -423,17 +436,20 @@ public class BattleSystem : MonoBehaviour
             BattleUIAlert.SetActive(true);
             //Reward Player with XP
             enemyObject.GetComponent<Humanoid>().giveRewardOnKill(playerObject.GetComponent<Humanoid>(), enemyObject.GetComponent<Humanoid>());
-            BattleUIAlert.GetComponentInChildren<Text>().text = enemyHumanoid.giveXP + "XP and " + enemyHumanoid.giveGold + " gold!";
+            BattleUIAlert.GetComponentInChildren<Text>().text = "Gained " + enemyHumanoid.giveXP + "XP and " + enemyHumanoid.giveGold + " gold!";
             playerHumanoid.currentXP += enemyHumanoid.giveXP;
             playerHumanoid.gold += enemyHumanoid.giveGold;
             playerObject.GetComponent<Humanoid>().updateBattleStats(player.GetComponent<Humanoid>());
-            if(enemyObject.name == "Boss")
+            if(enemyObject.name == "Boss(Clone)")
             {
                 BattleUIAlert.GetComponentInChildren<Text>().text = "Thank you for playing.";
-                CreditsButton.SetActive(true);
+                Credits.SetActive(true);
             }
             //Return to Game World
-            StartCoroutine(ReturnToWorld());
+            else if(enemyObject.name != "Boss")
+            {
+                StartCoroutine(ReturnToWorld());
+            }
         }
         else if (currentState == BattleState.DEFEAT)
         {
