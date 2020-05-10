@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator Transition(int levelIndex, string transitionTrigger)
     {
-        if(levelIndex == 2 || levelIndex == 4)
+        if(levelIndex == 3 || levelIndex == 5)
         {
             if (battleTransition.transform.GetChild(0).gameObject.activeSelf == false)
             {
@@ -62,11 +62,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if(other.gameObject.name == "Enemy")
             {
-                StartCoroutine(Transition(2, "StartBattleTransition"));
+                StartCoroutine(Transition(3, "StartBattleTransition"));
             }
             else if (other.gameObject.name == "Boss")
             {
-                StartCoroutine(Transition(4, "StartBattleTransition"));
+                StartCoroutine(Transition(5, "StartBattleTransition"));
             }
 
         }
@@ -74,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if(other.gameObject.name == "Portal")
             {
-                StartCoroutine(Transition(1, "StartMapTransition"));
+                StartCoroutine(Transition(2, "StartMapTransition"));
             }
             else if(other.gameObject.name == "PortalToBoss")
             {
-                StartCoroutine(Transition(3, "StartMapTransition"));
+                StartCoroutine(Transition(4, "StartMapTransition"));
             }
         }
         
