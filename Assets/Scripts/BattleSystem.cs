@@ -198,12 +198,12 @@ public class BattleSystem : MonoBehaviour
 
     
 
-    IEnumerator ReturnToWorld()
+    IEnumerator ReturnToWorld(string sceneName)
     {
         yield return new WaitForSeconds(2.5f);
         player.SetActive(true);
         FindObjectOfType<AudioManager>().Play("WorldMusic");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(sceneName);
     }
 
 
@@ -399,6 +399,7 @@ public class BattleSystem : MonoBehaviour
         //Deal Damage to Enemy
         playerHumanoid.CalculateBigBoyMove();
         bool isDead = enemyHumanoid.TakeDamage(playerHumanoid.damage);
+        FindObjectOfType<AudioManager>().Play("Slash");
 
         //Update Enemy HealthBar
         playerUI.ShowDamage(enemyHumanoid, playerHumanoid.damage);
@@ -460,7 +461,7 @@ public class BattleSystem : MonoBehaviour
             else if(enemyObject.name != "Boss(Clone)")
             {
                 FindObjectOfType<AudioManager>().Stop("BattleMusic");
-                StartCoroutine(ReturnToWorld());
+                StartCoroutine(ReturnToWorld("Grass Field 1"));
             }
         }
         else if (currentState == BattleState.DEFEAT)
@@ -470,7 +471,14 @@ public class BattleSystem : MonoBehaviour
             BattleUIAlert.SetActive(true);
             FindObjectOfType<AudioManager>().Stop("BattleMusic");
             FindObjectOfType<AudioManager>().Play("WorldMusic");
-            StartCoroutine(ReturnToWorld()); //Change this to game over on final game
+            if (enemyObject.name == "Boss(Clone)")
+            {
+                StartCoroutine(ReturnToWorld("Boss Room"));
+            }
+            else
+            {
+                StartCoroutine(ReturnToWorld("Grass Field 1"));
+            }
         }
     }
 

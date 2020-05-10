@@ -150,14 +150,14 @@ MonoBehaviour:
   maxHealth: 500
   currentMP: 50
   maxMP: 50
-  currentLimit: 95
+  currentLimit: 70
   maxLimit: 100
   currentXP: 0
-  maxXP: 100
+  maxXP: 30
   giveXP: 0
   gold: 0
   giveGold: 0
-  str: 5
+  str: 6
   intelligence: 0
   luck: 3
   sceneComingFrom: 

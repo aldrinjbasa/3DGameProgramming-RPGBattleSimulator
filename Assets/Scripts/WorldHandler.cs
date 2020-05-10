@@ -33,7 +33,7 @@ public class WorldHandler : MonoBehaviour
 
     IEnumerator startPositionGrassField()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         Vector3 startPosition = new Vector3(6.49f, 0.75f, -0.769f);
         GameObject.Find("Player").transform.position = startPosition;
         GameObject.Find("Player").GetComponent<NavMeshAgent>().enabled = true;
@@ -41,7 +41,7 @@ public class WorldHandler : MonoBehaviour
 
     IEnumerator startPositionBossRoom()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         Vector3 startPosition = new Vector3(6.49f, 0.75f, -0.769f);
         GameObject.Find("Player").transform.position = startPosition;
         GameObject.Find("Player").GetComponent<NavMeshAgent>().enabled = true;

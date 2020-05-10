@@ -39,7 +39,15 @@ public class Humanoid : MonoBehaviour
     public bool TakeDamage(float damageTaken) //Argument is used as BaseDamage
     {
         currentHealth -= damageTaken;
-        currentLimit += damageTaken * (str/200);
+        if(damageTaken < 0)
+        {
+            //Do Nothing
+        }
+        else
+        {
+            currentLimit += damageTaken * (str / 200);
+        }
+        
         if(currentHealth <= 0)
         {
             return true;
@@ -105,6 +113,9 @@ public class Humanoid : MonoBehaviour
         playerHumanoid.luck = luck;
         playerHumanoid.gold = gold;
         playerHumanoid.currentXP = currentXP;
+        playerHumanoid.maxXP = maxXP;
+        playerHumanoid.currentHealth = playerHumanoid.maxHealth;
+        playerHumanoid.currentMP = playerHumanoid.maxMP;
     }
 
     void Update()
